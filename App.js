@@ -7,7 +7,7 @@ const App = () => {
   const [clicked, setClicked] = useState(false);
   const [puased, setPaused] = useState(false);
   const [progress, setProgress] = useState(null);
-  const [fullScreen,setFullScreen]=useState(false)
+  const [fullScreen, setFullScreen] = useState(false);
   const ref = useRef();
   const format = seconds => {
     let mins = parseInt(seconds / 60)
@@ -16,11 +16,21 @@ const App = () => {
     let secs = (Math.trunc(seconds) % 60).toString().padStart(2, '0');
     return `${mins}:${secs}`;
   };
-  
+
   return (
+    // <SafeAreaView>
     <View style={{flex: 1}}>
+      <View style={{backgroundColor: '#aaa'}}>
+        <Text>Box 1</Text>
+      </View>
+      <View style={{backgroundColor: '#af9'}}>
+        <Text>Box 2</Text>
+      </View>
+      <View style={{backgroundColor: '#af9'}}>
+        <Text>Box 3</Text>
+      </View>
       <TouchableOpacity
-        style={{width: '100%', height:fullScreen?'100%': 200}}
+        style={{width: '100%', height: fullScreen ? '100%' : 200}}
         onPress={() => {
           setClicked(true);
         }}>
@@ -43,7 +53,7 @@ const App = () => {
 
           // Callback when video cannot be loaded
           muted
-          style={{width: '100%', height: fullScreen?'100%': 200}}
+          style={{width: '100%', height: fullScreen ? '100%' : 200}}
           resizeMode="contain"
         />
         {clicked && (
@@ -108,7 +118,7 @@ const App = () => {
                 bottom: 0,
                 paddingLeft: 20,
                 paddingRight: 20,
-                alignItems:'center'
+                alignItems: 'center',
               }}>
               <Text style={{color: 'white'}}>
                 {format(progress.currentTime)}
@@ -119,7 +129,7 @@ const App = () => {
                 maximumValue={progress.seekableDuration}
                 minimumTrackTintColor="#FFFFFF"
                 maximumTrackTintColor="#fff"
-                onValueChange={(x)=>{
+                onValueChange={x => {
                   ref.current.seek(x);
                 }}
               />
@@ -133,27 +143,35 @@ const App = () => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 position: 'absolute',
-                top: 10,
+                bottom: 60,
                 paddingLeft: 20,
                 paddingRight: 20,
-                alignItems:'center'
+                alignItems: 'center',
               }}>
-            <TouchableOpacity onPress={()=>{
-              if(fullScreen){
-                Orientation.lockToPortrait();
-            } else{
-                Orientation.lockToLandscape();
-            }
-            setFullScreen(!fullScreen)
-            }}>
-              <Image source={fullScreen?require('./src/minimize.png'):require('./src/full-size.png')}
-               style={{width:24,height: 24,tintColor:'white'}}/>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  if (fullScreen) {
+                    Orientation.lockToPortrait();
+                  } else {
+                    Orientation.lockToLandscape();
+                  }
+                  setFullScreen(!fullScreen);
+                }}>
+                <Image
+                  source={
+                    fullScreen
+                      ? require('./src/minimize.png')
+                      : require('./src/full-size.png')
+                  }
+                  style={{width: 24, height: 24, tintColor: 'white'}}
+                />
+              </TouchableOpacity>
             </View>
           </TouchableOpacity>
         )}
       </TouchableOpacity>
     </View>
+    // </SafeAreaView>
   );
 };
 
